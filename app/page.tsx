@@ -1,12 +1,16 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import FAQ from "./Components/FAQ";
+import ArrowIcon from "./Components/ArrowIcon";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* nav */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="font-display">DESIGN CO</div>
+        <div className="flex items-center gap-2">
+          <ArrowIcon></ArrowIcon>
+          <span className="font-display">DESIGN CO</span>
+        </div>
         <div className="hidden md:flex items-center space-x-8 text-sm font-display text-black">
           <a href="#" className="hover:text-gray-500 transition-colors">
             About
@@ -33,7 +37,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
             <div>
-              <div className="w-full h-[320px] bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 font-medium border border-gray-200"></div>
+              <div className="w-full h-[320px] bg-gray-100 rounded-md flex items-center justify-center"></div>
             </div>
             <div className="py-4 flex w-full justify-center gap-[8px]">
               <div className="h-[8px] w-[8px] bg-gray-600 flex rounded-full"></div>
@@ -52,7 +56,7 @@ export default function Home() {
               recruiting sessions designed to jump-start industry careers.
             </p>
             <div>
-              <button className="px-5 py-2.5 font-display text-white bg-black hover:bg-gray-600 transition-colors">
+              <button className="px-5 py-2.5 font-display text-white bg-black hover:bg-gray-600 transition-colors cursor-pointer">
                 Register now for $6
               </button>
             </div>
@@ -77,19 +81,19 @@ export default function Home() {
               <p className="text-2xl">Doors Open</p>
             </div>
             <div className="m-0 px-6 py-[40px] font-sans border-bottom border-b border-black">
-              <p className="text-sm">10:00 AM PT</p>
-              <p className="text-2xl">Doors Open</p>
+              <p className="text-sm">11:30 AM PT</p>
+              <p className="text-2xl">Illumina Talk</p>
             </div>
             <div className="m-0 px-6 py-[40px] font-sans border-bottom border-b border-black">
-              <p className="text-sm">10:00 AM PT</p>
-              <p className="text-2xl">Doors Open</p>
+              <p className="text-sm">1:00 PM PT</p>
+              <p className="text-2xl">AOPS Talk</p>
             </div>
             <div className="m-0 px-6 py-[40px] font-sans border-bottom border-b border-black">
-              <p className="text-sm">10:00 AM PT</p>
-              <p className="text-2xl">Doors Open</p>
+              <p className="text-sm">2:00 PM PT</p>
+              <p className="text-2xl">Doors Close</p>
             </div>
           </div>
-          <div className="w-full h-full bg-gray-200 rounded-xlcenter"></div>
+          <div className="w-full h-full bg-gray-100 rounded-md"></div>
         </div>
       </section>
 
@@ -135,7 +139,7 @@ export default function Home() {
       <section>
         <div className="w-full h-[390px] bg-gradient-to-b from-[#ECECEC] to-[#C8C8C8] flex flex-col justify-center items-center">
           <h1 className="text-3xl font-display pb-6">Register for Stride!</h1>
-          <button className="px-5 py-2.5 font-display text-white bg-black hover:bg-gray-600 transition-colors">
+          <button className="px-5 py-2.5 font-display text-white bg-black hover:bg-gray-600 transition-colors cursor-pointer">
             Register
           </button>
         </div>
