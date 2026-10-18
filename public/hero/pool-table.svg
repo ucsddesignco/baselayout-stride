@@ -1,0 +1,43 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="909" height="236.002" viewBox="0 0 909 236.002" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 179942159">
+<ellipse id="Ellipse 3821" cx="454.5" cy="132.002" rx="454.5" ry="104" fill="#D32525"/>
+<clipPath id="table-clip"><ellipse cx="454.5" cy="132.002" rx="454.5" ry="104"/></clipPath>
+<path id="Rectangle 7579" clip-path="url(#table-clip)" d="M276.54 123.979L1000 72.056L1000 91.953L555.78 116.136L276.501 131.34L276.54 123.979Z" fill="#660000"/>
+<g id="Group 179942157">
+<ellipse id="Ellipse 3822" cx="32.411" cy="15.2957" rx="32.411" ry="15.2957" transform="matrix(0.999673 0.0255528 0.0255528 -0.999673 434.004 70.1446)" fill="#660000"/>
+<g id="Group 179942121">
+<circle id="Ellipse 3762" cx="453.787" cy="41.6812" r="25.7432" transform="rotate(-164.576 453.787 41.6812)" fill="#F4F48F"/>
+<g id="Mask group">
+<mask id="mask0_0_69" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="428" y="15" width="52" height="53">
+<circle id="Ellipse 3763" cx="453.782" cy="41.6729" r="25.7432" transform="rotate(-164.576 453.782 41.6729)" fill="#FFC929"/>
+</mask>
+<g mask="url(#mask0_0_69)">
+<rect id="Rectangle 7550" x="479.412" y="2.00497" width="23.1689" height="90.1014" transform="rotate(15.4236 479.412 2.00497)" fill="#FCFFF2"/>
+<rect id="Rectangle 7551" x="429.782" y="-11.6839" width="23.1689" height="90.1014" transform="rotate(15.4236 429.782 -11.6839)" fill="#FCFFF2"/>
+</g>
+</g>
+</g>
+</g>
+<g id="Group 179942158">
+<ellipse id="Ellipse 3823" cx="55.7994" cy="22.0243" rx="55.7994" ry="22.0243" transform="matrix(-0.983675 -0.179952 -0.179952 0.983675 681.445 159.409)" fill="#660000"/>
+<g id="Group 179942122">
+<circle id="Ellipse 3762_2" cx="595.596" cy="143.597" r="35.775" transform="rotate(-134.567 595.596 143.597)" fill="#A4CDF9"/>
+<g id="Mask group_2">
+<mask id="mask1_0_69" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="559" y="107" width="73" height="73">
+<circle id="Ellipse 3763_2" cx="595.593" cy="143.596" r="35.775" transform="rotate(-134.567 595.593 143.596)" fill="#FFC929"/>
+</mask>
+<g mask="url(#mask1_0_69)">
+<rect id="Rectangle 7550_2" x="654.003" y="113.673" width="32.1975" height="125.213" transform="rotate(45.433 654.003 113.673)" fill="#FCFFF2"/>
+<rect id="Rectangle 7551_2" x="603.794" y="62.7023" width="32.1975" height="125.213" transform="rotate(45.433 603.794 62.7023)" fill="#FCFFF2"/>
+</g>
+</g>
+</g>
+</g>
+<g id="Group 179942156">
+<ellipse id="Ellipse 3824" cx="46.7848" cy="18.4662" rx="46.7848" ry="18.4662" transform="matrix(-0.990863 -0.134872 -0.134872 0.990863 260 115.705)" fill="#660000"/>
+<g id="Group 179942123">
+<circle id="Ellipse 3762_3" cx="33.3594" cy="33.3594" r="33.3594" transform="matrix(0.701742 -0.712431 -0.712431 -0.701742 190.529 155.349)" fill="#FCFFF2"/>
+</g>
+</g>
+</g>
+</svg>

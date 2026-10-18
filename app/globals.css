@@ -8,6 +8,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-cream: #fcfff2;
   --font-sans: var(--font-nb-international), sans-serif;
   --font-display: var(--font-neue-plak), sans-serif;
 }
