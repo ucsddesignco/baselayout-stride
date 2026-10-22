@@ -2,16 +2,17 @@ import Image from "next/image";
 
 // Star decorations, positioned on the 1280×760 hero stage.
 // `inset` is the star's offset within its square bounding box.
+// `duration`/`delay` desync each star's breathing animation.
 const STAR_INSET_LG = "inset-[8.23%_8.82%_10.56%_8.82%]";
 const STAR_INSET_SM = "inset-[8.9%_9.47%_11.18%_9.47%]";
 
 const stars = [
-  { src: "/hero/star-red.svg", w: 29.9892, h: 29.5714, box: "left-[89px] top-[103px] size-[37px]", inset: STAR_INSET_SM },
-  { src: "/hero/star-red.svg", w: 29.9892, h: 29.5714, box: "left-[857px] top-[275px] size-[37px]", inset: STAR_INSET_SM },
-  { src: "/hero/star-yellow-2.svg", w: 50.239, h: 49.5335, box: "left-[670px] top-[103px] size-[61px]", inset: STAR_INSET_LG },
-  { src: "/hero/star-yellow-1.svg", w: 50.239, h: 49.5335, box: "left-[251px] top-[613px] size-[61px]", inset: STAR_INSET_LG },
-  { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[1057px] top-[140px] size-[92px]", inset: STAR_INSET_LG },
-  { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[-44px] top-[421px] size-[92px]", inset: STAR_INSET_LG },
+  { src: "/hero/star-red.svg", w: 29.9892, h: 29.5714, box: "left-[89px] top-[103px] size-[37px]", inset: STAR_INSET_SM, duration: "4.2s", delay: "0s" },
+  { src: "/hero/star-red.svg", w: 29.9892, h: 29.5714, box: "left-[857px] top-[275px] size-[37px]", inset: STAR_INSET_SM, duration: "3.8s", delay: "1.6s" },
+  { src: "/hero/star-yellow-2.svg", w: 50.239, h: 49.5335, box: "left-[670px] top-[103px] size-[61px]", inset: STAR_INSET_LG, duration: "4.6s", delay: "0.8s" },
+  { src: "/hero/star-yellow-1.svg", w: 50.239, h: 49.5335, box: "left-[251px] top-[613px] size-[61px]", inset: STAR_INSET_LG, duration: "4s", delay: "2.4s" },
+  { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[1057px] top-[140px] size-[92px]", inset: STAR_INSET_LG, duration: "4.8s", delay: "1.2s" },
+  { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[-44px] top-[421px] size-[92px]", inset: STAR_INSET_LG, duration: "3.6s", delay: "2s" },
 ];
 
 export default function Hero() {
@@ -59,7 +60,10 @@ export default function Hero() {
         {/* stars */}
         {stars.map((star, i) => (
           <div key={i} aria-hidden className={`absolute ${star.box}`}>
-            <div className={`absolute ${star.inset}`}>
+            <div
+              className={`absolute ${star.inset} motion-safe:animate-breathe`}
+              style={{ animationDuration: star.duration, animationDelay: star.delay }}
+            >
               <Image
                 src={star.src}
                 alt=""

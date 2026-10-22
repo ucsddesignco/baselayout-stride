@@ -11,6 +11,17 @@
   --color-cream: #fcfff2;
   --font-sans: var(--font-nb-international), sans-serif;
   --font-display: var(--font-neue-plak), sans-serif;
+  --animate-breathe: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
 }
 
 /* @media (prefers-color-scheme: dark) {
