@@ -1,0 +1,17 @@
+<svg width="74" height="58" viewBox="427 15 74 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 179942157">
+<ellipse id="Ellipse 3822" cx="32.411" cy="15.2957" rx="32.411" ry="15.2957" transform="matrix(0.999673 0.0255528 0.0255528 -0.999673 434.004 70.1446)" fill="#660000"/>
+<g id="Group 179942121">
+<circle id="Ellipse 3762" cx="453.787" cy="41.6812" r="25.7432" transform="rotate(-164.576 453.787 41.6812)" fill="#F4F48F"/>
+<g id="Mask group">
+<mask id="mask0_0_69" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="428" y="15" width="52" height="53">
+<circle id="Ellipse 3763" cx="453.782" cy="41.6729" r="25.7432" transform="rotate(-164.576 453.782 41.6729)" fill="#FFC929"/>
+</mask>
+<g mask="url(#mask0_0_69)">
+<rect id="Rectangle 7550" x="479.412" y="2.00497" width="23.1689" height="90.1014" transform="rotate(15.4236 479.412 2.00497)" fill="#FCFFF2"/>
+<rect id="Rectangle 7551" x="429.782" y="-11.6839" width="23.1689" height="90.1014" transform="rotate(15.4236 429.782 -11.6839)" fill="#FCFFF2"/>
+</g>
+</g>
+</g>
+</g>
+</svg>

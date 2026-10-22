@@ -1,4 +1,5 @@
 import Image from "next/image";
+import PoolShot from "./PoolShot";
 
 // Star decorations, positioned on the 1280×760 hero stage.
 // `inset` is the star's offset within its square bounding box.
@@ -12,6 +13,12 @@ const stars = [
   { src: "/hero/star-yellow-1.svg", w: 50.239, h: 49.5335, box: "left-[251px] top-[613px] size-[61px]", inset: STAR_INSET_LG },
   { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[1057px] top-[140px] size-[92px]", inset: STAR_INSET_LG },
   { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[-44px] top-[421px] size-[92px]", inset: STAR_INSET_LG },
+];
+
+// Object balls (ball + shadow), positioned on the hero stage.
+const balls = [
+  { src: "/hero/ball-yellow.svg", w: 74, h: 58, pos: "left-[907px] top-[457px]" },
+  { src: "/hero/ball-blue.svg", w: 120, h: 89, pos: "left-[1039px] top-[549px]" },
 ];
 
 export default function Hero() {
@@ -36,25 +43,23 @@ export default function Hero() {
         </p>
 
         {/* pool table */}
-        <Image
-          src="/hero/pool-table.svg"
-          alt=""
-          aria-hidden
-          width={909}
-          height={236.002}
-          loading="eager"
-          className="absolute left-[480px] top-[442px] max-w-none"
-        />
+        <div aria-hidden className="absolute left-[480px] top-[470.002px] h-[208px] w-[909px] rounded-[50%] bg-felt" />
 
-        {/* pool cue */}
-        <Image
-          src="/hero/cue.svg"
-          alt=""
-          aria-hidden
-          width={696.486}
-          height={105.807}
-          className="absolute left-[737px] top-[438.98px] max-w-none"
-        />
+        {/* cue, cue ball & shadows (animated), with the object balls layered in between */}
+        <PoolShot>
+          {balls.map((ball) => (
+            <Image
+              key={ball.src}
+              src={ball.src}
+              alt=""
+              aria-hidden
+              width={ball.w}
+              height={ball.h}
+              loading="eager"
+              className={`absolute max-w-none ${ball.pos}`}
+            />
+          ))}
+        </PoolShot>
 
         {/* stars */}
         {stars.map((star, i) => (
