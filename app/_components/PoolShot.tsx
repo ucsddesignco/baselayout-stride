@@ -17,7 +17,6 @@ import {
 const DIR_X = -0.9918;
 const DIR_Y = 0.1271;
 
-// Cue ball, in pool-table.svg coordinates (table sits at stage 480,442).
 const BALL_CX = 190.15;
 const BALL_CY = 108.17;
 const BALL_R = 33.36;
