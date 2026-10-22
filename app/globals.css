@@ -11,16 +11,27 @@
   --color-cream: #fcfff2;
   --font-sans: var(--font-nb-international), sans-serif;
   --font-display: var(--font-neue-plak), sans-serif;
-  --animate-breathe: breathe 4s ease-in-out infinite;
+  /*
+   * Star motion: a gentle breath plus a slow, continuous spin. They animate
+   * the separate `scale` and `rotate` properties so the two compose.
+   * Per-star durations are set inline in Hero.tsx.
+   */
+  --animate-breathe: breathe 4s ease-in-out infinite, spin-slow 12.5s linear infinite;
 }
 
 @keyframes breathe {
   0%,
   100% {
-    transform: scale(1);
+    scale: 1;
   }
   50% {
-    transform: scale(1.12);
+    scale: 1.12;
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    rotate: 360deg;
   }
 }
 
