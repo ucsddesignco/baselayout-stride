@@ -1,5 +1,6 @@
 import Image from "next/image";
-import PoolTableLight from "./PoolTableLight";
+import HeroIntro from "./HeroIntro";
+import PoolTable from "./PoolTable";
 
 // Star decorations, positioned on the 1280×760 hero stage.
 // `inset` is the star's offset within its square bounding box.
@@ -19,60 +20,57 @@ export default function Hero() {
   return (
     <section className="relative w-full overflow-clip bg-black">
       <div className="relative mx-auto h-[760px] w-[1280px]">
-        {/* wordmark */}
-        <h1 className="absolute left-[365px] top-[348px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[157.962px] leading-normal text-cream">
-          Stride
-        </h1>
-        <Image
-          src="/hero/stride-dot.svg"
-          alt=""
-          aria-hidden
-          width={41.6614}
-          height={41.6614}
-          className="absolute left-[359.91px] top-[181.79px] size-[41.661px] max-w-none"
-        />
-
-        <p className="absolute left-[364px] top-[368px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[21.016px] leading-normal text-cream">
-          Design Expo blah blah blah WORDS WORDS
-        </p>
-
-        <PoolTableLight>
-          {/* pool table */}
+        <HeroIntro>
+          {/* wordmark */}
+          <h1 data-hero-text className="absolute left-[365px] top-[348px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[157.962px] leading-normal text-cream opacity-0">
+            Stride
+          </h1>
           <Image
-            src="/hero/pool-table.svg"
+            data-hero-text
+            src="/hero/stride-dot.svg"
             alt=""
             aria-hidden
-            width={909}
-            height={236.002}
-            loading="eager"
-            className="absolute left-[480px] top-[442px] max-w-none"
+            width={41.6614}
+            height={41.6614}
+            className="absolute left-[359.91px] top-[181.79px] size-[41.661px] max-w-none opacity-0"
           />
 
-          {/* pool cue */}
-          <Image
-            src="/hero/cue.svg"
-            alt=""
-            aria-hidden
-            width={696.486}
-            height={105.807}
-            className="absolute left-[737px] top-[438.98px] max-w-none"
-          />
-        </PoolTableLight>
+          <p data-hero-text className="absolute left-[364px] top-[368px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[21.016px] leading-normal text-cream opacity-0">
+            Design Expo blah blah blah WORDS WORDS
+          </p>
 
-        {/* stars */}
-        {stars.map((star, i) => (
-          <div key={i} aria-hidden className={`absolute ${star.box}`}>
-            <div className={`absolute ${star.inset}`}>
+          {/* table light (flickers on) */}
+          <div data-hero-light className="absolute inset-0 opacity-[0.08] brightness-30">
+            <PoolTable />
+
+            {/* pool cue (slides in with its shadow in PoolTable) */}
+            <div data-hero-cue className="absolute left-[737px] top-[438.98px] opacity-0">
               <Image
-                src={star.src}
+                src="/hero/cue.svg"
                 alt=""
-                width={star.w}
-                height={star.h}
-                className="block size-full max-w-none"
+                aria-hidden
+                width={696.486}
+                height={105.807}
+                className="block max-w-none"
               />
             </div>
           </div>
-        ))}
+
+          {/* stars */}
+          {stars.map((star, i) => (
+            <div key={i} aria-hidden className={`absolute ${star.box}`}>
+              <div className={`absolute ${star.inset}`}>
+                <Image
+                  src={star.src}
+                  alt=""
+                  width={star.w}
+                  height={star.h}
+                  className="block size-full max-w-none"
+                />
+              </div>
+            </div>
+          ))}
+        </HeroIntro>
       </div>
     </section>
   );
