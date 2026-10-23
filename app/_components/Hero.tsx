@@ -22,11 +22,12 @@ export default function Hero() {
       <div className="relative mx-auto h-[760px] w-[1280px]">
         <HeroIntro>
           {/* wordmark */}
-          <h1 data-hero-text className="absolute left-[365px] top-[348px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[157.962px] leading-normal text-cream opacity-0">
+          <h1 data-hero-text data-hero-glow-title className="absolute left-[365px] top-[348px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[157.962px] leading-normal text-cream opacity-0">
             Stride
           </h1>
           <Image
             data-hero-text
+            data-hero-glow-dot
             src="/hero/stride-dot.svg"
             alt=""
             aria-hidden
