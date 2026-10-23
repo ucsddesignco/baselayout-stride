@@ -1,4 +1,5 @@
 import Image from "next/image";
+import PoolTableLight from "./PoolTableLight";
 
 // Star decorations, positioned on the 1280×760 hero stage.
 // `inset` is the star's offset within its square bounding box.
@@ -35,26 +36,28 @@ export default function Hero() {
           Design Expo blah blah blah WORDS WORDS
         </p>
 
-        {/* pool table */}
-        <Image
-          src="/hero/pool-table.svg"
-          alt=""
-          aria-hidden
-          width={909}
-          height={236.002}
-          loading="eager"
-          className="absolute left-[480px] top-[442px] max-w-none"
-        />
+        <PoolTableLight>
+          {/* pool table */}
+          <Image
+            src="/hero/pool-table.svg"
+            alt=""
+            aria-hidden
+            width={909}
+            height={236.002}
+            loading="eager"
+            className="absolute left-[480px] top-[442px] max-w-none"
+          />
 
-        {/* pool cue */}
-        <Image
-          src="/hero/cue.svg"
-          alt=""
-          aria-hidden
-          width={696.486}
-          height={105.807}
-          className="absolute left-[737px] top-[438.98px] max-w-none"
-        />
+          {/* pool cue */}
+          <Image
+            src="/hero/cue.svg"
+            alt=""
+            aria-hidden
+            width={696.486}
+            height={105.807}
+            className="absolute left-[737px] top-[438.98px] max-w-none"
+          />
+        </PoolTableLight>
 
         {/* stars */}
         {stars.map((star, i) => (
