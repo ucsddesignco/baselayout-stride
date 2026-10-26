@@ -55,6 +55,17 @@ export default function Hero() {
                 className="block max-w-none"
               />
             </div>
+
+            {/* overhead light cone; its bottom edge is the table ellipse's lower arc */}
+            <Image
+              src="/hero/light.svg"
+              alt=""
+              aria-hidden
+              width={909}
+              height={678.002}
+              loading="eager"
+              className="pointer-events-none absolute left-[480px] top-0 max-w-none"
+            />
           </div>
 
           {/* stars */}

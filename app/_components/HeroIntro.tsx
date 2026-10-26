@@ -39,7 +39,8 @@ const DIR_Y = 0.1271;
 const CUE_LEFT = 737; // cue's left edge in stage px
 const CUE_OFFSCREEN_MARGIN = 40;
 
-const PAUSE = 1; // s between title → flicker → cue
+const TITLE_PAUSE = 1; // s between title and flicker
+const CUE_PAUSE = 0.5; // s between flicker and cue
 const TEXT_FADE = 0.6;
 const CUE_SLIDE = 1.1;
 const CUE_EASE = [0.16, 1, 0.3, 1] as const;
@@ -51,7 +52,6 @@ const dotGlow = (a: number) =>
   `drop-shadow(0 0 4px rgba(164,205,249,${0.9 * a})) drop-shadow(0 0 12px rgba(164,205,249,${0.5 * a}))`;
 const GLOW_ON = { title: titleGlow(1), dot: dotGlow(1) };
 const GLOW_OFF = { title: titleGlow(0), dot: dotGlow(0) };
-const GLOW_FADE = 0.9; // fades out alongside the flicker
 
 // Builds keyframes with hard cuts: each level is held for its duration, then
 // jumps to the next level over a near-zero interval.
@@ -79,6 +79,7 @@ function buildKeyframes() {
 }
 
 const KEYFRAMES = buildKeyframes();
+const GLOW_FADE = KEYFRAMES.duration; // fades out alongside the flicker
 
 export default function HeroIntro({ children }: { children: ReactNode }) {
   const [scope, animate] = useAnimate<HTMLDivElement>();
@@ -114,7 +115,7 @@ export default function HeroIntro({ children }: { children: ReactNode }) {
         if (cancelled) return;
 
         // 2. pause, then the light flickers on while the glow fades out
-        const fadeOut = { delay: PAUSE, duration: GLOW_FADE, ease: "easeInOut" } as const;
+        const fadeOut = { delay: TITLE_PAUSE, duration: GLOW_FADE, ease: "easeInOut" } as const;
         track(animate("[data-hero-glow-title]", { textShadow: GLOW_OFF.title }, fadeOut));
         track(animate("[data-hero-glow-dot]", { filter: GLOW_OFF.dot }, fadeOut));
         await track(
@@ -122,7 +123,7 @@ export default function HeroIntro({ children }: { children: ReactNode }) {
             "[data-hero-light]",
             { opacity: KEYFRAMES.opacity, filter: KEYFRAMES.filter },
             {
-              delay: PAUSE,
+              delay: TITLE_PAUSE,
               duration: KEYFRAMES.duration,
               times: KEYFRAMES.times,
               ease: "linear",
@@ -143,7 +144,7 @@ export default function HeroIntro({ children }: { children: ReactNode }) {
             // Explicit start keyframes: the cue stays hidden through the delay,
             // then appears off-screen and slides to rest.
             { x: [dx, 0], y: [dy, 0], opacity: [1, 1] },
-            { delay: PAUSE, duration: CUE_SLIDE, ease: CUE_EASE },
+            { delay: CUE_PAUSE, duration: CUE_SLIDE, ease: CUE_EASE },
           ),
         );
       })();
