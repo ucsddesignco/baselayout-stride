@@ -45,13 +45,15 @@ body {
   --c: cos(var(--elevation)); /* how much height shows up as screen offset */
   /* perspective-ish ball sizing: 1 at tablet, 0 top-down */
   --p: calc(var(--c) / 0.97347);
+  /* undoes the felt's squash relative to the tablet angle (see shadows) */
+  --unsquash: calc(0.2288 / var(--s));
 
   /* table center and scale move from the desktop to the tablet to the mobile
      frame (--t and --u are never both non-zero, so their terms just add) */
-  --k: calc(1 - 0.4572 * var(--t) - 0.1062 * var(--u));
+  --k: calc(1 - 0.4572 * var(--t) + 0.0363 * var(--u));
   position: absolute;
-  left: calc(50% - 6.52px + 8.52px * var(--t) + 301.02px * var(--u));
-  top: calc(615.69px - 236.69px * var(--t) - 41.69px * var(--u));
+  left: calc(50% - 6.52px + 8.52px * var(--t) + 388.48px * var(--u));
+  top: calc(615.69px - 236.69px * var(--t) + 9.89px * var(--u));
 }
 
 /* Browsers without length division: step through the slide and tilt instead */
@@ -136,44 +138,93 @@ body {
     scale(var(--r));
 }
 
-/* Light from the upper left: azimuth 32°, elevation 58.7° (matches the
-   mobile frame's 16×10 shadow offset on a 31px ball). A sphere's shadow is an
-   ellipse pushed r·cot(elev) along the light, stretched 1/sin(elev) along it. */
+/* Ball shadows blend from the desktop frame's hand-placed ellipses (at the
+   tablet angle, --p = 1) to a lit shadow (top-down, --p = 0). Each is an
+   offset plus a 2×2 matrix on the unit circle, both in ball radii.
+   Lit: light straight from the left (azimuth 0°), elevation atan(4) ≈ 76°,
+   like a lamp nearly overhead. A sphere's shadow is an ellipse pushed
+   r·cot(elev) along the light, stretched 1/sin(elev) along it, i.e. offset
+   (0.25, 0) and matrix scale(1.0308, 1): a thin crescent to the right that
+   stays within the ball's height.
+   Figma: per ball, --sx/--sz and --sa…--sd (see TableScene). Their depth
+   terms are scaled by --unsquash so they keep their on-screen size as the
+   camera tilts up, instead of ballooning once the felt stops being squashed. */
 .table-ball-shadow {
   transform: translate(
-      calc((var(--x) + var(--r) * 0.5162) * 1px),
-      calc((var(--z) + var(--r) * 0.3226) * 1px)
+      calc((var(--x) + var(--r) * (0.25 + (var(--sx) - 0.25) * var(--p))) * 1px),
+      calc((var(--z) + var(--r) * var(--sz) * var(--unsquash) * var(--p)) * 1px)
     )
-    rotate(32deg) scale(calc(var(--r) * 1.1708), var(--r));
+    matrix(
+      calc(var(--r) * (1.0308 + (var(--sa) - 1.0308) * var(--p))),
+      calc(var(--r) * var(--sb) * var(--unsquash) * var(--p)),
+      calc(var(--r) * var(--sc) * var(--p)),
+      calc(var(--r) * (1 + (var(--sd) * var(--unsquash) - 1) * var(--p))),
+      0,
+      0
+    );
 }
 
-/* The cue is a 3D segment aimed at the cue ball: horizontal heading 8.57°
-   off the x axis, butt raised 5.1°. Unit direction tip → butt is
-   (-0.98492, -0.14842, 0.08889); it's 873 long and starts 1.8 radii out. */
+/* The cue is a 3D segment aimed at the cue ball from the right, at a point
+   0.32 radii above its center: horizontal heading -10.14° off the x axis,
+   butt raised 5.1°. Unit direction tip → butt is (0.98049, -0.17532, 0.08889);
+   it's 792.2 long and its tip sits 2.42 radii out (desktop frame 9026:1631). */
 .table-cue,
 .table-cue-shadow {
-  --gap: calc(1.8 * var(--r));
-  --tx: calc(var(--bx) - 0.98492 * var(--gap));
-  --tz: calc(var(--bz) - 0.14842 * var(--gap));
-  --th: calc(var(--r) + 0.08889 * var(--gap));
-  --thickness: calc(27 + (20 - 27) * var(--p));
+  --gap: calc(2.4205 * var(--r));
+  --tx: calc(var(--x) + 0.98049 * var(--gap));
+  --tz: calc(var(--z) - 0.17532 * var(--gap));
+  --th: calc(1.3198 * var(--r) + 0.08889 * var(--gap));
 }
 
 .table-cue {
-  --dy: calc(-0.14842 * var(--s) - 0.08889 * var(--c));
+  --dy: calc(-0.17532 * var(--s) - 0.08889 * var(--c));
   transform: translate(
       calc(var(--tx) * 1px),
       calc((var(--tz) * var(--s) - var(--th) * var(--c)) * 1px)
     )
-    rotate(atan2(var(--dy), -0.98492))
-    scale(calc(873 * hypot(-0.98492, var(--dy))), var(--thickness));
+    rotate(atan2(var(--dy), 0.98049))
+    scale(calc(792.2 * hypot(0.98049, var(--dy))), 19);
 }
 
-/* Shadow of the cue on the felt: both ends pushed along the light by their height */
+/* Shadow of the cue on the felt, cast by the same light as the balls rather
+   than the Figma band (9026:1665). The light pushes a point at height h by
+   h·(--lx, --lz) on the felt: at the tablet angle that's the average of the
+   Figma ball shadow offsets (0.707, -1.725), top-down (0.15, 0), with the
+   same blend and unsquash as the ball shadows. Top-down the push is shorter
+   than the balls' 0.25 so the shadow hugs the cue: it slides along the cue
+   toward the butt, starts behind the tip and only peeks out below the cue.
+   The axis column is the cue's 792.2 length, butt raised 70.42; the width
+   column is the cue's 19px round section projected along the light: its
+   horizontal radius (0.17602, 0.98439, 0) and up radius (-0.0875, 0.01565,
+   0.99606), each measured across the shadow's axis.
+   On phones (≤430px, --under = 1, eased in from 500px) the shadow instead sits
+   directly under the cue as drawn: a push of (0, -c/s) lines it up with the
+   cue's lifted screen position, and the desktop thickening is dropped. It's
+   then nudged 12.9 world px across the cue toward the viewer (--peek), so ~7px
+   shows below the cue at 390px (table scale 0.5428). */
 .table-cue-shadow {
+  --under: clamp(0, (var(--t) - 0.6893) / 0.1977, 1);
+  --peek: calc(12.9 * var(--under));
+  --lx: calc((0.15 + 0.557 * var(--p)) * (1 - var(--under)));
+  --lz: calc(
+    -1.725 * var(--unsquash) * var(--p) * (1 - var(--under)) - var(--c) / var(--s) * var(--under)
+  );
+  --ax: calc(776.74 + 70.42 * var(--lx));
+  --az: calc(-138.89 + 70.42 * var(--lz));
+  --ux: calc(var(--ax) / hypot(var(--ax), var(--az)));
+  --uz: calc(var(--az) / hypot(var(--ax), var(--az)));
+  /* thickened toward the tablet angle, where the flat camera makes the true
+     projected width read too thin (top-down stays physical) */
+  --w: calc(
+    19 * (1 + 0.75 * var(--p) * (1 - var(--under))) *
+      hypot(
+        var(--ux) * 0.98439 - var(--uz) * 0.17602,
+        var(--ux) * (0.01565 + 0.99606 * var(--lz)) - var(--uz) * (-0.0875 + 0.99606 * var(--lx))
+      )
+  );
   transform: translate(
-      calc((var(--tx) + var(--th) * 0.5162) * 1px),
-      calc((var(--tz) + var(--th) * 0.3226) * 1px)
+      calc((var(--tx) + var(--th) * var(--lx) - var(--uz) * var(--peek)) * 1px),
+      calc((var(--tz) + var(--th) * var(--lz) + var(--ux) * var(--peek)) * 1px)
     )
-    rotate(187.27deg) scale(826.4, var(--thickness));
+    matrix(var(--ax), var(--az), calc(-1 * var(--uz) * var(--w)), calc(var(--ux) * var(--w)), 0, 0);
 }
