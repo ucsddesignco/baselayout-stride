@@ -27,13 +27,16 @@ body {
 }
 
 /* ─── Hero pool table (see app/_components/TableScene.tsx) ───────────────────
-   The camera tilts from the tablet angle (≥744px) to straight top-down
-   (≤390px). --t runs 0 → 1 across that range; everything below is derived
-   from it, so the scene re-projects continuously with no JS. */
+   From the desktop breakpoint (1024px) down to the tablet frame (744px) the
+   table slides from its desktop pose to its tablet pose; --u runs 1 → 0 across
+   that range. Below that the camera tilts from the tablet angle (≥744px) to
+   straight top-down (≤390px); --t runs 0 → 1 across that range. Everything
+   below is derived from them, so the scene moves continuously with no JS. */
 .table-scene {
   /* viewport width as a plain number (length ÷ length via atan2) */
   --viewport: tan(atan2(100vw, 1px));
   --t: clamp(0, (744 - var(--viewport)) / 354, 1);
+  --u: clamp(0, (var(--viewport) - 744) / 280, 1);
 
   /* camera elevation, linear in angle: asin(0.2288) (tablet table squash) → 90° */
   --elevation: calc(13.227deg + 76.773deg * var(--t));
@@ -42,25 +45,39 @@ body {
   /* perspective-ish ball sizing: 1 at tablet, 0 top-down */
   --p: calc(var(--c) / 0.97347);
 
-  /* table center and scale move from the tablet to the mobile frame */
-  --k: calc(1 - 0.4572 * var(--t));
+  /* table center and scale move from the desktop to the tablet to the mobile
+     frame (--t and --u are never both non-zero, so their terms just add) */
+  --k: calc(1 - 0.4572 * var(--t) - 0.1062 * var(--u));
   position: absolute;
-  left: calc(50% - 6.52px + 8.52px * var(--t));
-  top: calc(615.69px - 236.69px * var(--t));
+  left: calc(50% - 6.52px + 8.52px * var(--t) + 301.02px * var(--u));
+  top: calc(615.69px - 236.69px * var(--t) - 41.69px * var(--u));
 }
 
-@media (width >= 64rem) {
-  .table-scene {
-    --k: 0.8938;
-    left: calc(50% + 294.5px);
-    top: 574px;
-  }
-}
-
-/* Browsers without length division: step through the tilt instead */
+/* Browsers without length division: step through the slide and tilt instead */
 @supports not (width: calc(tan(atan2(1px, 1px)) * 1px)) {
   .table-scene {
     --t: 0;
+    --u: 0;
+  }
+  @media (width >= 814px) {
+    .table-scene {
+      --u: 0.25;
+    }
+  }
+  @media (width >= 884px) {
+    .table-scene {
+      --u: 0.5;
+    }
+  }
+  @media (width >= 954px) {
+    .table-scene {
+      --u: 0.75;
+    }
+  }
+  @media (width >= 64rem) {
+    .table-scene {
+      --u: 1;
+    }
   }
   @media (width < 656px) {
     .table-scene {

@@ -3,7 +3,7 @@ import TableScene from "./TableScene";
 
 // The hero has three fixed-size stages (desktop 1280, tablet 744, mobile 390),
 // each centered and swapped at a breakpoint. Only the pool table scene moves
-// continuously with width (see TableScene).
+// continuously with width, desktop → tablet → mobile (see TableScene).
 
 // Star decorations. `inset` is the star's offset within its square bounding box.
 const STAR_INSET_LG = "inset-[8.23%_8.82%_10.56%_8.82%]";
