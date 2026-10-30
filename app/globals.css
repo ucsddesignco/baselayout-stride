@@ -25,3 +25,137 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ─── Hero pool table (see app/_components/TableScene.tsx) ───────────────────
+   The camera tilts from the tablet angle (≥744px) to straight top-down
+   (≤390px). --t runs 0 → 1 across that range; everything below is derived
+   from it, so the scene re-projects continuously with no JS. */
+.table-scene {
+  /* viewport width as a plain number (length ÷ length via atan2) */
+  --viewport: tan(atan2(100vw, 1px));
+  --t: clamp(0, (744 - var(--viewport)) / 354, 1);
+
+  /* camera elevation, linear in angle: asin(0.2288) (tablet table squash) → 90° */
+  --elevation: calc(13.227deg + 76.773deg * var(--t));
+  --s: sin(var(--elevation)); /* how much the felt is squashed vertically */
+  --c: cos(var(--elevation)); /* how much height shows up as screen offset */
+  /* perspective-ish ball sizing: 1 at tablet, 0 top-down */
+  --p: calc(var(--c) / 0.97347);
+
+  /* table center and scale move from the tablet to the mobile frame */
+  --k: calc(1 - 0.4572 * var(--t));
+  position: absolute;
+  left: calc(50% - 6.52px + 8.52px * var(--t));
+  top: calc(615.69px - 236.69px * var(--t));
+}
+
+@media (width >= 64rem) {
+  .table-scene {
+    --k: 0.8938;
+    left: calc(50% + 294.5px);
+    top: 574px;
+  }
+}
+
+/* Browsers without length division: step through the tilt instead */
+@supports not (width: calc(tan(atan2(1px, 1px)) * 1px)) {
+  .table-scene {
+    --t: 0;
+  }
+  @media (width < 656px) {
+    .table-scene {
+      --t: 0.25;
+    }
+  }
+  @media (width < 567px) {
+    .table-scene {
+      --t: 0.5;
+    }
+  }
+  @media (width < 479px) {
+    .table-scene {
+      --t: 0.75;
+    }
+  }
+  @media (width <= 390px) {
+    .table-scene {
+      --t: 1;
+    }
+  }
+}
+
+.table-scene svg {
+  position: absolute;
+  left: -620px;
+  top: -640px;
+  max-width: none;
+  overflow: visible;
+  transform: scale(var(--k));
+  transform-origin: 620px 640px;
+}
+
+.table-cone {
+  opacity: calc(0.21 * max(0, 1 - 1.5 * var(--t)));
+}
+
+.table-plane {
+  transform: scale(1, var(--s));
+}
+
+/* Ball radius eases from its tablet size to its top-down size */
+.table-ball,
+.table-ball-shadow,
+.table-cue,
+.table-cue-shadow {
+  --r: calc(var(--rm) + (var(--rt) - var(--rm)) * var(--p));
+}
+
+.table-ball {
+  transform: translate(
+      calc(var(--x) * 1px),
+      calc((var(--z) * var(--s) - var(--r) * var(--c)) * 1px)
+    )
+    scale(var(--r));
+}
+
+/* Light from the upper left: azimuth 32°, elevation 58.7° (matches the
+   mobile frame's 16×10 shadow offset on a 31px ball). A sphere's shadow is an
+   ellipse pushed r·cot(elev) along the light, stretched 1/sin(elev) along it. */
+.table-ball-shadow {
+  transform: translate(
+      calc((var(--x) + var(--r) * 0.5162) * 1px),
+      calc((var(--z) + var(--r) * 0.3226) * 1px)
+    )
+    rotate(32deg) scale(calc(var(--r) * 1.1708), var(--r));
+}
+
+/* The cue is a 3D segment aimed at the cue ball: horizontal heading 8.57°
+   off the x axis, butt raised 5.1°. Unit direction tip → butt is
+   (-0.98492, -0.14842, 0.08889); it's 873 long and starts 1.8 radii out. */
+.table-cue,
+.table-cue-shadow {
+  --gap: calc(1.8 * var(--r));
+  --tx: calc(var(--bx) - 0.98492 * var(--gap));
+  --tz: calc(var(--bz) - 0.14842 * var(--gap));
+  --th: calc(var(--r) + 0.08889 * var(--gap));
+  --thickness: calc(27 + (20 - 27) * var(--p));
+}
+
+.table-cue {
+  --dy: calc(-0.14842 * var(--s) - 0.08889 * var(--c));
+  transform: translate(
+      calc(var(--tx) * 1px),
+      calc((var(--tz) * var(--s) - var(--th) * var(--c)) * 1px)
+    )
+    rotate(atan2(var(--dy), -0.98492))
+    scale(calc(873 * hypot(-0.98492, var(--dy))), var(--thickness));
+}
+
+/* Shadow of the cue on the felt: both ends pushed along the light by their height */
+.table-cue-shadow {
+  transform: translate(
+      calc((var(--tx) + var(--th) * 0.5162) * 1px),
+      calc((var(--tz) + var(--th) * 0.3226) * 1px)
+    )
+    rotate(187.27deg) scale(826.4, var(--thickness));
+}

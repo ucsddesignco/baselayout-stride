@@ -1,75 +1,141 @@
 import Image from "next/image";
+import TableScene from "./TableScene";
 
-// Star decorations, positioned on the 1280×760 hero stage.
-// `inset` is the star's offset within its square bounding box.
+// The hero has three fixed-size stages (desktop 1280, tablet 744, mobile 390),
+// each centered and swapped at a breakpoint. Only the pool table scene moves
+// continuously with width (see TableScene).
+
+// Star decorations. `inset` is the star's offset within its square bounding box.
 const STAR_INSET_LG = "inset-[8.23%_8.82%_10.56%_8.82%]";
 const STAR_INSET_SM = "inset-[8.9%_9.47%_11.18%_9.47%]";
 
-const stars = [
-  { src: "/hero/star-red.svg", w: 29.9892, h: 29.5714, box: "left-[89px] top-[103px] size-[37px]", inset: STAR_INSET_SM },
-  { src: "/hero/star-red.svg", w: 29.9892, h: 29.5714, box: "left-[857px] top-[275px] size-[37px]", inset: STAR_INSET_SM },
-  { src: "/hero/star-yellow-2.svg", w: 50.239, h: 49.5335, box: "left-[670px] top-[103px] size-[61px]", inset: STAR_INSET_LG },
-  { src: "/hero/star-yellow-1.svg", w: 50.239, h: 49.5335, box: "left-[251px] top-[613px] size-[61px]", inset: STAR_INSET_LG },
-  { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[1057px] top-[140px] size-[92px]", inset: STAR_INSET_LG },
-  { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, box: "left-[-44px] top-[421px] size-[92px]", inset: STAR_INSET_LG },
+const RED = { src: "/hero/star-red.svg", w: 29.9892, h: 29.5714, inset: STAR_INSET_SM };
+const YELLOW = { src: "/hero/star-yellow-1.svg", w: 50.239, h: 49.5335, inset: STAR_INSET_LG };
+const BLUE = { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, inset: STAR_INSET_LG };
+
+type Star = typeof RED & { box: string };
+
+const desktopStars: Star[] = [
+  { ...RED, box: "left-[89px] top-[103px] size-[37px]" },
+  { ...RED, box: "left-[857px] top-[275px] size-[37px]" },
+  { ...YELLOW, box: "left-[670px] top-[103px] size-[61px]" },
+  { ...YELLOW, box: "left-[251px] top-[613px] size-[61px]" },
+  { ...BLUE, box: "left-[1057px] top-[140px] size-[92px]" },
+  { ...BLUE, box: "left-[-44px] top-[421px] size-[92px]" },
 ];
+
+// Figma 9026:1895
+const tabletStars: Star[] = [
+  { ...RED, box: "left-[136px] top-[26.34px] size-[37px]" },
+  { ...RED, box: "left-[740px] top-[318px] size-[37px]" },
+  { ...YELLOW, box: "left-[623px] top-[75.34px] size-[61px]" },
+  { ...BLUE, box: "left-[78px] top-[380.34px] size-[92px]" },
+];
+
+// Figma 9026:2063
+const mobileStars: Star[] = [
+  { ...RED, box: "left-[46px] top-[45.34px] size-[37px]" },
+  { ...RED, box: "left-[300px] top-[671.34px] size-[37px]" },
+  { ...YELLOW, box: "left-[306px] top-[45.34px] size-[61px]" },
+  { ...BLUE, box: "left-[112px] top-[606.34px] size-[92px]" },
+];
+
+function Stars({ stars }: { stars: Star[] }) {
+  return stars.map((star, i) => (
+    <div key={i} aria-hidden className={`absolute ${star.box}`}>
+      <div className={`absolute ${star.inset}`}>
+        <Image
+          src={star.src}
+          alt=""
+          width={star.w}
+          height={star.h}
+          className="block size-full max-w-none"
+        />
+      </div>
+    </div>
+  ));
+}
+
+// "Stride" with the dot over the i. Sized by font-size so it scales per stage.
+function Wordmark({ className }: { className: string }) {
+  return (
+    <h1 className={`relative whitespace-nowrap font-display leading-[1.4756] text-cream ${className}`}>
+      Stride
+      <Image
+        src="/hero/stride-dot.svg"
+        alt=""
+        aria-hidden
+        width={41.6614}
+        height={41.6614}
+        className="absolute left-[1.5441em] top-[0.4228em] size-[0.2637em] max-w-none"
+      />
+    </h1>
+  );
+}
+
+function EventDetails({ date, iconClassName = "" }: { date: string; iconClassName?: string }) {
+  return (
+    <div className="flex flex-col gap-[9px] font-sans text-[16px] leading-none text-white">
+      <p className="flex items-center gap-[8px]">
+        <span className="whitespace-pre underline">{date}</span>
+        <span className={`relative size-[20px] ${iconClassName}`}>
+          <Image
+            src="/hero/icon-calendar-add.svg"
+            alt=""
+            aria-hidden
+            width={15.5026}
+            height={15.8327}
+            className="absolute left-[2.83px] top-[2.5px] max-w-none"
+          />
+        </span>
+      </p>
+      <p className="flex items-center gap-[8px]">
+        <span className="underline">DIB 208</span>
+        <span className={`relative size-[20px] ${iconClassName}`}>
+          <Image
+            src="/hero/icon-location.svg"
+            alt=""
+            aria-hidden
+            width={14.3333}
+            height={17.7734}
+            className="absolute left-[2.83px] top-[1.17px] max-w-none"
+          />
+        </span>
+      </p>
+    </div>
+  );
+}
 
 export default function Hero() {
   return (
-    <section className="relative w-full overflow-clip bg-black">
-      <div className="relative mx-auto h-[760px] w-[1280px]">
-        {/* wordmark */}
-        <h1 className="absolute left-[365px] top-[348px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[157.962px] leading-normal text-cream">
-          Stride
-        </h1>
-        <Image
-          src="/hero/stride-dot.svg"
-          alt=""
-          aria-hidden
-          width={41.6614}
-          height={41.6614}
-          className="absolute left-[359.91px] top-[181.79px] size-[41.661px] max-w-none"
-        />
+    <section className="relative h-[760px] w-full overflow-clip bg-black">
+      <TableScene />
 
-        <p className="absolute left-[364px] top-[368px] -translate-x-1/2 -translate-y-full whitespace-nowrap text-center font-display text-[21.016px] leading-normal text-cream">
-          Design Expo blah blah blah WORDS WORDS
-        </p>
+      {/* desktop */}
+      <div className="absolute left-1/2 top-0 hidden h-full w-[1280px] -translate-x-1/2 lg:block">
+        <div className="absolute left-[116px] top-[115px]">
+          <Wordmark className="text-[157.962px]" />
+          <EventDetails date={"Wednesday, November 18  |  6:30-9:00 PM"} iconClassName="opacity-80" />
+        </div>
+        <Stars stars={desktopStars} />
+      </div>
 
-        {/* pool table */}
-        <Image
-          src="/hero/pool-table.svg"
-          alt=""
-          aria-hidden
-          width={909}
-          height={236.002}
-          loading="eager"
-          className="absolute left-[480px] top-[442px] max-w-none"
-        />
+      {/* tablet */}
+      <div className="absolute left-1/2 top-0 hidden h-full w-[744px] -translate-x-1/2 sm:block lg:hidden">
+        <div className="absolute left-[75px] top-[42.34px]">
+          <Wordmark className="text-[138.93px]" />
+          <EventDetails date={"Wednesday, November 18  |  6:30-9:00 PM"} iconClassName="opacity-80" />
+        </div>
+        <Stars stars={tabletStars} />
+      </div>
 
-        {/* pool cue */}
-        <Image
-          src="/hero/cue.svg"
-          alt=""
-          aria-hidden
-          width={696.486}
-          height={105.807}
-          className="absolute left-[737px] top-[438.98px] max-w-none"
-        />
-
-        {/* stars */}
-        {stars.map((star, i) => (
-          <div key={i} aria-hidden className={`absolute ${star.box}`}>
-            <div className={`absolute ${star.inset}`}>
-              <Image
-                src={star.src}
-                alt=""
-                width={star.w}
-                height={star.h}
-                className="block size-full max-w-none"
-              />
-            </div>
-          </div>
-        ))}
+      {/* mobile */}
+      <div className="absolute left-1/2 top-0 h-full w-[390px] -translate-x-1/2 sm:hidden">
+        <div className="absolute left-[36px] top-[275px] flex flex-col gap-[2px]">
+          <Wordmark className="text-[95.5px]" />
+          <EventDetails date={"Wed, November 18  |  6:30-9:00 PM"} />
+        </div>
+        <Stars stars={mobileStars} />
       </div>
     </section>
   );
