@@ -15,13 +15,13 @@ const BLUE = { src: "/hero/star-blue.svg", w: 75.7703, h: 74.7063, inset: STAR_I
 
 type Star = typeof RED & { box: string };
 
+// Figma 9026:1631
 const desktopStars: Star[] = [
-  { ...RED, box: "left-[89px] top-[103px] size-[37px]" },
-  { ...RED, box: "left-[857px] top-[275px] size-[37px]" },
-  { ...YELLOW, box: "left-[670px] top-[103px] size-[61px]" },
-  { ...YELLOW, box: "left-[251px] top-[613px] size-[61px]" },
-  { ...BLUE, box: "left-[1057px] top-[140px] size-[92px]" },
-  { ...BLUE, box: "left-[-44px] top-[421px] size-[92px]" },
+  { ...RED, box: "left-[45px] top-[132px] size-[48px]" },
+  { ...RED, box: "left-[866px] top-[300px] size-[48px]" },
+  { ...YELLOW, box: "left-[657px] top-[84px] size-[61px]" },
+  { ...BLUE, box: "left-[1119px] top-[175px] size-[92px]" },
+  { ...BLUE, box: "left-[146px] top-[505px] size-[92px]" },
 ];
 
 // Figma 9026:1895
@@ -78,30 +78,67 @@ function EventDetails({ date, iconClassName = "" }: { date: string; iconClassNam
     <div className="flex flex-col gap-[9px] font-sans text-[16px] leading-none text-white">
       <p className="flex items-center gap-[8px]">
         <span className="whitespace-pre underline">{date}</span>
-        <span className={`relative size-[20px] ${iconClassName}`}>
-          <Image
-            src="/hero/icon-calendar-add.svg"
-            alt=""
-            aria-hidden
-            width={15.5026}
-            height={15.8327}
-            className="absolute left-[2.83px] top-[2.5px] max-w-none"
-          />
-        </span>
+        <CalendarIcon className={iconClassName} />
       </p>
       <p className="flex items-center gap-[8px]">
         <span className="underline">DIB 208</span>
-        <span className={`relative size-[20px] ${iconClassName}`}>
-          <Image
-            src="/hero/icon-location.svg"
-            alt=""
-            aria-hidden
-            width={14.3333}
-            height={17.7734}
-            className="absolute left-[2.83px] top-[1.17px] max-w-none"
-          />
-        </span>
+        <LocationIcon className={iconClassName} />
       </p>
+    </div>
+  );
+}
+
+function CalendarIcon({ className = "" }: { className?: string }) {
+  return (
+    <span className={`relative size-[20px] shrink-0 ${className}`}>
+      <Image
+        src="/hero/icon-calendar-add.svg"
+        alt=""
+        aria-hidden
+        width={15.5026}
+        height={15.8327}
+        className="absolute left-[2.83px] top-[2.5px] max-w-none"
+      />
+    </span>
+  );
+}
+
+function LocationIcon({ className = "" }: { className?: string }) {
+  return (
+    <span className={`relative size-[20px] shrink-0 ${className}`}>
+      <Image
+        src="/hero/icon-location.svg"
+        alt=""
+        aria-hidden
+        width={14.3333}
+        height={17.7734}
+        className="absolute left-[2.83px] top-[1.17px] max-w-none"
+      />
+    </span>
+  );
+}
+
+// Desktop lays the date and place side by side, each with an action link below.
+// TODO: real hrefs for the calendar invite and the map.
+function DesktopEventDetails() {
+  const link =
+    "flex items-center gap-[8px] whitespace-nowrap font-plak text-[14px] underline decoration-from-font [text-underline-position:from-font] opacity-80";
+  return (
+    <div className="mt-[4px] flex w-full items-center justify-between font-sans text-[16px] leading-[normal] text-white">
+      <div className="flex w-[326.505px] flex-col items-start gap-[4px]">
+        <p className="whitespace-pre">{"Wednesday, November 18  |  6:30-9:00 PM"}</p>
+        <a href="#" className={link}>
+          <CalendarIcon />
+          Add to Calendar
+        </a>
+      </div>
+      <div className="flex w-[285.959px] flex-col items-start gap-[4px]">
+        <p>DIB 208</p>
+        <a href="#" className={link}>
+          <LocationIcon />
+          View in Maps
+        </a>
+      </div>
     </div>
   );
 }
@@ -113,9 +150,9 @@ export default function Hero() {
 
       {/* desktop */}
       <div className="absolute left-1/2 top-0 hidden h-full w-[1280px] -translate-x-1/2 lg:block">
-        <div className="absolute left-[116px] top-[115px]">
-          <Wordmark className="text-[157.962px]" />
-          <EventDetails date={"Wednesday, November 18  |  6:30-9:00 PM"} iconClassName="opacity-80" />
+        <div className="absolute left-[110px] top-[115px] w-[621px]">
+          <Wordmark className="text-[142.907px] [text-shadow:0_0_15.5px_rgba(255,255,255,0.65)]" />
+          <DesktopEventDetails />
         </div>
         <Stars stars={desktopStars} />
       </div>
